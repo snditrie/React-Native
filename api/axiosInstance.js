@@ -3,7 +3,7 @@ import axios from "axios";
 // import { router } from "expo-router";
 
 const axiosInstance = axios.create({
-    baseURL: 'http://10.10.103.56:8082/api/v1',
+    baseURL: 'http://10.10.103.57:8082/api/v1',
 });
 
 // axiosInstance.interceptors.request.use(

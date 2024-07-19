@@ -10,9 +10,9 @@ const TabLayout = () => {
       case "index":
         name = focused ? "home" : "home-outline";
         break;
-      case "product":
-        name = focused ? "cart" : "cart-outline";
-        break;
+      // case "product":
+      //   name = focused ? "cart" : "cart-outline";
+      //   break;
       case "employee":
         name = focused ? "people" : "people-outline";
         break;
@@ -38,7 +38,7 @@ const TabLayout = () => {
       }}
     >
       <Tabs.Screen name="index" />
-      <Tabs.Screen name="product" />
+      {/* <Tabs.Screen name="product" /> */}
       {/* <Tabs.Screen name="menu" /> */}
       <Tabs.Screen name="employee" />
       <Tabs.Screen name="profile" />

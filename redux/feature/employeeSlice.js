@@ -24,8 +24,11 @@ export const createEmployee = createAsyncThunk(
     'employee/createEmployee',
     async (employee, {rejectedWithValue}) => {
         try {
+            console.log('Sending employee data:', employee);
             const response = await axiosInstance.post('/employee', employee, {
-                headers: {}
+                headers: {
+                    'Content-Type': 'applicaation/json'
+                }
             })
             return response.data
         } catch (e) {
@@ -34,14 +37,31 @@ export const createEmployee = createAsyncThunk(
     }
 )
 
+// export const updateEmployee = createAsyncThunk(
+//     'employee/updateEmployee',
+//     async (employee, {rejectedWithValue}) => {
+//         try {
+//             const response = await axiosInstance.put('/employee', employee)
+//             return response.data
+//         } catch (e) {
+//             return rejectedWithValue(error.response.data)
+//         }
+//     }
+// )
+
 export const updateEmployee = createAsyncThunk(
     'employee/updateEmployee',
-    async (employee, {rejectedWithValue}) => {
+    async (employee, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.put('/employee', employee)
-            return response.data
+            console.log('Updating employee data:', employee)
+            const response = await axiosInstance.put(`/employee/${employee.id}`, employee, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            return response.data;
         } catch (e) {
-            return rejectedWithValue(error.response.data)
+            return rejectWithValue(e.response.data);
         }
     }
 )

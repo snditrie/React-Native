@@ -36,21 +36,17 @@ const EmployeeForm = () => {
     { label: "Manager", value: "2" },
   ];
 
-  // const { employees, addEmployee, updateEmployee } =
-     useContext(EmployeeContext);
   const { employees } = useSelector((state) => state.employee);
   const dispatch = useDispatch();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  // const isEditMode = route.params?.id;
-  const { id } = useLocalSearchParams(); // Mengambil parameter rute
+  const { id } = useLocalSearchParams();
   const isEditMode = Boolean(id);
   const [value, setValue] = useState(null);
 
   useEffect(() => {
     if (isEditMode) {
       const employee = employees.find((emp) => emp.id === id);
-      console.log("Employee found:", employee);
       if (employee) {
         setFormValues({
           fullName: employee.fullName,
@@ -61,6 +57,7 @@ const EmployeeForm = () => {
           salary: employee.salary,
           profileImage: employee.profileImage,
         });
+        setValue(employee.position); // Set position value
       }
     }
   }, [isEditMode, id, employees]);
@@ -72,21 +69,19 @@ const EmployeeForm = () => {
       return;
     }
 
+    const employeeData = {
+      ...formValues,
+      hireDate: formValues.hireDate.toISOString().split("T")[0],
+      position: value, // Set the position value
+    };
+
     if (isEditMode) {
-      const updatedEmployee = {
-        id,
-        ...formValues,
-        hireDate: formValues.hireDate.toISOString().split("T")[0],
-      };
-      dispatch(updateEmployee(updatedEmployee));
+      dispatch(updateEmployee({ id, ...employeeData }));
     } else {
-      const newEmployee = {
-        id: String(Date.now()),
-        ...formValues,
-        hireDate: formValues.hireDate.toISOString().split("T")[0],
-      };
-      dispatch(createEmployee(newEmployee));
+      dispatch(createEmployee(employeeData));
     }
+
+    // Clear form after submission
     setFormValues({
       fullName: "",
       email: "",
@@ -96,6 +91,7 @@ const EmployeeForm = () => {
       salary: "",
       profileImage: null,
     });
+    setValue(null);
     router.push("employee");
   };
 
@@ -116,9 +112,6 @@ const EmployeeForm = () => {
   };
 
   return (
-    //   <View>
-    //     <Text>Profile</Text>
-    //   </View>
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.title}>
@@ -176,19 +169,10 @@ const EmployeeForm = () => {
           )}
 
           <Text style={styles.label}>Position</Text>
-          {/* <TextInput
-            style={styles.input}
-            value={formValues.position}
-            onChangeText={(text) =>
-              setFormValues({ ...formValues, position: text })
-            }
-            placeholder="Enter position"
-          /> */}
           <Dropdown
             style={styles.input}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
             data={positionEmployee}
             labelField="label"
@@ -226,7 +210,7 @@ const EmployeeForm = () => {
           {formValues.profileImage && (
             <Image
               source={{ uri: formValues.profileImage.uri }}
-              // style={styles.profileImagePreview}
+              style={styles.profileImagePreview}
             />
           )}
 
@@ -284,18 +268,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginBottom: 16,
   },
-  button: {
-    backgroundColor: COLORS.primary,
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-  },
-  buttonText: {
-    color: COLORS.white,
-    fontSize: 18,
-    fontWeight: "bold",
-  },
   buttonAction: {
     backgroundColor: COLORS.blue,
     paddingVertical: 10,
@@ -326,43 +298,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.black,
   },
-  listContainer: {
-    flex: 1,
-    marginTop: 20,
-  },
-  employeeItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey,
-  },
-  employeeInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  employeeText: {
-    fontSize: 16,
-    color: COLORS.black,
-    marginLeft: 12,
-  },
-  deleteText: {
-    color: COLORS.red,
-    fontSize: 16,
-  },
   profileImagePreview: {
     width: 100,
     height: 100,
     borderRadius: 50,
     alignSelf: "center",
     marginTop: 16,
-  },
-  employeeImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
   },
   dateButton: {
     height: 40,
