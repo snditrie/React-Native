@@ -10,14 +10,14 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import COLORS from "../constants/color";
 import { useDispatch, useSelector } from "react-redux";
 import { createEmployee, updateEmployee } from "../redux/feature/employeeSlice";
 import { launchImageLibrary } from "react-native-image-picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Dropdown } from "react-native-element-dropdown";
 import { AntDesign } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import COLORS from "../constants/color";
 
 const EmployeeForm = () => {
   const [formValues, setFormValues] = useState({
@@ -35,18 +35,17 @@ const EmployeeForm = () => {
     { label: "Manager", value: "2" },
   ];
 
+  const { employees } = useSelector((state) => state.employee);
   const dispatch = useDispatch();
-  const router = useRouter();
+
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const { id } = useLocalSearchParams();
   const isEditMode = Boolean(id);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const [value, setValue] = useState(null);
 
   useEffect(() => {
     if (isEditMode) {
-      // Fetch employee data if in edit mode
-      // Assume employees are available in the Redux store
-      const employee = useSelector((state) => state.employee.employees.find((emp) => emp.id === id));
+      const employee = employees.find((emp) => emp.id === id);
       if (employee) {
         setFormValues({
           fullName: employee.fullName,
@@ -57,14 +56,14 @@ const EmployeeForm = () => {
           salary: employee.salary,
           profileImage: employee.profileImage,
         });
-        setValue(employee.position);
+        setValue(employee.position); // Set position value
       }
     }
-  }, [isEditMode, id]);
+  }, [isEditMode, id, employees]);
 
   const handleAddOrUpdateEmployee = () => {
-    const { fullName, email, phone, salary } = formValues;
-    if (!fullName || !email || !phone || !salary) {
+    const { fullName, email, phone ,salary } = formValues;
+    if (!fullName || !email || !phone  ||!salary) {
       Alert.alert("Error", "All fields must be filled out.");
       return;
     }
@@ -72,18 +71,40 @@ const EmployeeForm = () => {
     const employeeData = {
       ...formValues,
       hireDate: formValues.hireDate.toISOString().split("T")[0],
-      position: value,
+      position: value, // Set the position value
     };
 
     if (isEditMode) {
       dispatch(updateEmployee({ id, ...employeeData }))
-        .then(() => router.push("employee"))
-        .catch((error) => Alert.alert("Error", error.message));
+        .then(() => {
+          Alert.alert("Success", "Employee updated successfully.");
+          router.push("employee");
+        })
+        .catch((error) => {
+          Alert.alert("Error", error.message || "Failed to update employee.");
+        });
     } else {
       dispatch(createEmployee(employeeData))
-        .then(() => router.push("employee"))
-        .catch((error) => Alert.alert("Error", error.message));
+        .then(() => {
+          Alert.alert("Success", "Employee added successfully.");
+          router.push("employee");
+        })
+        .catch((error) => {
+          Alert.alert("Error", error.message || "Failed to add employee.");
+        });
     }
+    // Clear form after submission
+    setFormValues({
+      fullName: "",
+      email: "",
+      phone: "",
+      hireDate: new Date(),
+      position: "",
+      salary: "",
+      profileImage: null,
+    });
+    setValue(null);
+    router.push("employee");
   };
 
   const handleImagePicker = () => {
@@ -286,21 +307,21 @@ const styles = StyleSheet.create({
   },
   supportedFormats: {
     marginLeft: 10,
-    color: COLORS.grey,
-    fontSize: 12,
+    fontSize: 16,
+    color: COLORS.black,
   },
   profileImagePreview: {
     width: 100,
     height: 100,
-    borderRadius: 10,
-    marginTop: 10,
+    borderRadius: 50,
+    alignSelf: "center",
+    marginTop: 16,
   },
   dateButton: {
     height: 40,
     borderColor: COLORS.grey,
     borderWidth: 1,
     borderRadius: 8,
-    paddingHorizontal: 12,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -312,22 +333,20 @@ const styles = StyleSheet.create({
   actionContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  buttonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: "bold",
+    alignItems: "center",
   },
   placeholderStyle: {
     fontSize: 16,
-    color: COLORS.black,
   },
   selectedTextStyle: {
     fontSize: 16,
-    color: COLORS.black,
   },
   iconStyle: {
     width: 20,
     height: 20,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
   },
 });
