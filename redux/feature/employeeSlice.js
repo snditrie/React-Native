@@ -26,11 +26,6 @@ export const createEmployee = createAsyncThunk(
     async (employee, {rejectedWithValue}) => {
         try {
             console.log('Sending employee data:', employee);
-            // const response = await axiosInstance.post('/employee', employee, {
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // })
 
             const formData = new FormData()
             formData.append("employee", JSON.stringify(employee))
@@ -51,7 +46,7 @@ export const createEmployee = createAsyncThunk(
 
             const data = res.json()
 
-            console.log("Masuk GOBLOK nih data: ", data)
+            console.log("data: ", data)
 
             return data.data
         } catch (e) {
@@ -59,18 +54,6 @@ export const createEmployee = createAsyncThunk(
         }
     }
 )
-
-// export const updateEmployee = createAsyncThunk(
-//     'employee/updateEmployee',
-//     async (employee, {rejectedWithValue}) => {
-//         try {
-//             const response = await axiosInstance.put('/employee', employee)
-//             return response.data
-//         } catch (e) {
-//             return rejectedWithValue(error.response.data)
-//         }
-//     }
-// )
 
 export const updateEmployee = createAsyncThunk(
     'employee/updateEmployee',
