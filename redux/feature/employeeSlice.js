@@ -91,9 +91,9 @@ export const updateEmployee = createAsyncThunk(
 
 export const deleteEmployee = createAsyncThunk(
     'employee/deleteEmployee',
-    async (employee, {rejectedWithValue}) => {
+    async (id, {rejectedWithValue}) => {
         try {
-            const response = await axiosInstance.put('/api/v1/employee', employee)
+            const response = await axiosInstance.delete(`/employee/${id}` )
             return response.data
         } catch (e) {
             return rejectedWithValue(error.response.data)
