@@ -32,6 +32,10 @@ export const createEmployee = createAsyncThunk(
             //     }
             // })
 
+            const formData = new FormData()
+            formData.append("employee", JSON.stringify(employee))
+            formData.append("image", null)
+
             const res = await fetch("http://10.10.103.57:8082/api/v1/employee", {
                 method: 'POST',
                 headers: {
@@ -40,7 +44,7 @@ export const createEmployee = createAsyncThunk(
                     "Accept-Encoding": "gzip, deflate, br",
                     "Connection": "keep-alive"
                 },
-                body: employee
+                body: formData
             })
 
             console.log("Status kita saat ini: ", res)

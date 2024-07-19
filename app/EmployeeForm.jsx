@@ -23,16 +23,16 @@ const EmployeeForm = () => {
   const [formValues, setFormValues] = useState({
     fullName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     hireDate: new Date(),
     position: "",
     salary: "",
-    profileImage: null,
+    image: null,
   });
 
   const positionEmployee = [
-    { label: "Cashier", value: "1" },
-    { label: "Manager", value: "2" },
+    { label: "Cashier", value: "CASHIER" },
+    { label: "Manager", value: "MANAGER" },
   ];
 
   const { employees } = useSelector((state) => state.employee);
@@ -46,15 +46,16 @@ const EmployeeForm = () => {
   useEffect(() => {
     if (isEditMode) {
       const employee = employees.find((emp) => emp.id === id);
+      console.log(employee);
       if (employee) {
         setFormValues({
           fullName: employee.fullName,
           email: employee.email,
-          phone: employee.phone,
+          phoneNumber: employee.phoneNumber,
           hireDate: new Date(employee.hireDate),
           position: employee.position,
-          salary: employee.salary,
-          profileImage: employee.profileImage,
+          salary: employee.salary.toString(),
+          image: employee.image,
         });
         setValue(employee.position); // Set position value
       }
@@ -62,15 +63,15 @@ const EmployeeForm = () => {
   }, [isEditMode, id, employees]);
 
   const handleAddOrUpdateEmployee = () => {
-    const { fullName, email, phone ,salary } = formValues;
-    if (!fullName || !email || !phone  ||!salary) {
+    const { fullName, email, phoneNumber, salary } = formValues;
+    if (!fullName || !email || !phoneNumber || !salary) {
       Alert.alert("Error", "All fields must be filled out.");
       return;
     }
 
     const employeeData = {
       ...formValues,
-      hireDate: formValues.hireDate.toISOString().split("T")[0],
+      hireDate: formValues.hireDate.toISOString(),
       position: value, // Set the position value
     };
 
@@ -97,11 +98,11 @@ const EmployeeForm = () => {
     setFormValues({
       fullName: "",
       email: "",
-      phone: "",
-      hireDate: new Date(),
+      phoneNumber: "",
+      hireDate: new Date().toISOString(),
       position: "",
       salary: "",
-      profileImage: null,
+      image: null,
     });
     setValue(null);
     router.push("employee");
@@ -112,7 +113,7 @@ const EmployeeForm = () => {
       if (response.didCancel || response.error) {
         console.log("User cancelled image picker or an error occurred");
       } else {
-        setFormValues({ ...formValues, profileImage: response.assets[0] });
+        setFormValues({ ...formValues, image: response.assets[0] });
       }
     });
   };
@@ -154,9 +155,9 @@ const EmployeeForm = () => {
           <Text style={styles.label}>Phone Number</Text>
           <TextInput
             style={styles.input}
-            value={formValues.phone}
+            value={formValues.phoneNumber}
             onChangeText={(text) =>
-              setFormValues({ ...formValues, phone: text })
+              setFormValues({ ...formValues, phoneNumber: text })
             }
             placeholder="Enter phone number"
             keyboardType="phone-pad"
@@ -219,9 +220,9 @@ const EmployeeForm = () => {
             </TouchableOpacity>
             <Text style={styles.supportedFormats}>.jpg/.png</Text>
           </View>
-          {formValues.profileImage && (
+          {formValues.image && (
             <Image
-              source={{ uri: formValues.profileImage.uri }}
+              source={{ uri: formValues.image.uri }}
               style={styles.profileImagePreview}
             />
           )}
