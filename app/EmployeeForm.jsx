@@ -32,12 +32,12 @@ const EmployeeForm = () => {
   });
 
   const positionEmployee = [
-    { label: "CASHIER", value: "1" },
-    { label: "MANAGER", value: "2" },
+    { label: "Cashier", value: "1" },
+    { label: "Manager", value: "2" },
   ];
 
   // const { employees, addEmployee, updateEmployee } =
-  //   useContext(EmployeeContext);
+     useContext(EmployeeContext);
   const { employees } = useSelector((state) => state.employee);
   const dispatch = useDispatch();
 

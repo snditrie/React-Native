@@ -10,9 +10,10 @@ import {
 import React, { useEffect, useState } from "react";
 import { router, useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import COLORS from "../constants/color";
+
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployee, fetchEmployees } from "../redux/feature/employeeSlice";
+import { deleteEmployee, fetchEmployees } from "../../redux/feature/employeeSlice";
+import COLORS from "../../constants/color";
 
 const Employee = () => {
   const { employees } = useSelector((state) => state.employee);

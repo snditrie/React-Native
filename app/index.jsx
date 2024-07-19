@@ -56,8 +56,6 @@ const index = () => {
               <Text style={styles.loginText}>Login</Text>
             </Pressable>
           </View>
-
-          <Button title="employee" onPress={() => router.push("employee")} />
         </View>
       </View>
     </View>

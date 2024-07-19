@@ -1,3 +1,7 @@
+
+
+
+
 import {
   Image,
   SafeAreaView,
@@ -11,74 +15,82 @@ import React from "react";
 import COLORS from "../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
 
-const index = () => {
+const EmployeeDashboard = () => {
   return (
-    // <View>
-    //   <Text>index</Text>
-    // </View>
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         {/* Header Bar */}
         <View style={styles.header}>
-          <Text style={styles.headerText}>Glamour Beauty</Text>
-          {/* Add search element here */}
-          <TouchableOpacity style={styles.headerText}>
-            {/* <Text style={styles.footerText}>Profile</Text> */}
+          <Text style={styles.headerText}>Employee Dashboard</Text>
+          <TouchableOpacity style={styles.profileButton}
+             onPress={() => navigation.navigate('Profile')}>
+            
             <Ionicons name="person-circle-outline" color="white" size={24} />
           </TouchableOpacity>
         </View>
 
         <ScrollView>
-          {/* Promotion Banner */}
-          <Image
-            source={require("../../assets/lipstick-icon-vector-16367580.jpg")}
-            style={styles.banner}
-          />
-
-          {/* Product Categories */}
-          <View style={styles.categoryContainer}>
-            {/* Add product categories here */}
-            {/* Example categories */}
-            <TouchableOpacity style={styles.categoryItem}>
-              <Image
-                source={require("../../assets/lipstick.png")}
-                style={styles.categoryIcon}
-              />
-              <Text style={styles.categoryText}>Lipsticks</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.categoryItem}>
-              <Image
-                source={require("../../assets/eyeshadow.png")}
-                style={styles.categoryIcon}
-              />
-              <Text style={styles.categoryText}>Eyeshadows</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.categoryItem}>
-              <Image
-                source={require("../../assets/foundation.png")}
-                style={styles.categoryIcon}
-              />
-              <Text style={styles.categoryText}>Foundations</Text>
-            </TouchableOpacity>
+          {/* Employee Statistics */}
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Text style={styles.statLabel}>Total Employees:</Text>
+              <Text style={styles.statValue}>30</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statLabel}>Active Employees:</Text>
+              <Text style={styles.statValue}>30</Text>
+            </View>
+            <View style={styles.statItem}>
+              <Text style={styles.statLabel}>Departments:</Text>
+              <Text style={styles.statValue}>2</Text>
+            </View>
           </View>
 
-          {/* Featured Products */}
-          {/* <View style={styles.productContainer}>
-          {products.map((product) => (
-            <TouchableOpacity key={product.id} style={styles.productItem}>
-              <Image source={product.image} style={styles.productImage} />
-              <Text style={styles.productName}>{product.name}</Text>
-              <Text style={styles.productPrice}>{product.price}</Text>
+          {/* Employee List */}
+          <View style={styles.employeeList}>
+            <Text style={styles.sectionTitle}>Employees</Text>
+            {/* Example employee items */}
+            <TouchableOpacity style={styles.employeeItem}>
+              <View style={styles.employeeInfo}>
+                <Image
+                  source={{ uri: "https://randomuser.me/api/portraits/men/75.jpg" }}
+                  style={styles.profileImage}
+                />
+                <View>
+                  <Text style={styles.employeeName}>Alex Johnson</Text>
+                  <Text style={styles.employeePosition}>Manajer</Text>
+                </View>
+              </View>
             </TouchableOpacity>
-          ))}
-        </View> */}
+            <TouchableOpacity style={styles.employeeItem}>
+              <View style={styles.employeeInfo}>
+                <Image
+                  source={{ uri: "https://randomuser.me/api/portraits/women/65.jpg" }}
+                  style={styles.profileImage}
+                />
+                <View>
+                  <Text style={styles.employeeName}>Emma Smith</Text>
+                  <Text style={styles.employeePosition}>Cashier</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+       
+          </View>
+
+     
+          <TouchableOpacity 
+            style={styles.addButton} 
+            onPress={() => navigation.navigate('EmployeeForm')}
+          >
+            <Text style={styles.addButtonText}>Add Employee</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     </SafeAreaView>
   );
 };
 
-export default index;
+export default EmployeeDashboard;
 
 const styles = StyleSheet.create({
   container: {
@@ -90,80 +102,86 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingVertical: 15,
     backgroundColor: COLORS.primary,
+    elevation: 3,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     color: COLORS.white,
   },
-  banner: {
-    width: "100%",
-    height: 400,
-    resizeMode: "cover",
+  profileButton: {
+    padding: 10,
   },
-  categoryContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginVertical: 20,
+  statsContainer: {
+    margin: 20,
+    backgroundColor: COLORS.lightGray,
+    borderRadius: 15,
+    padding: 20,
+    elevation: 3,
   },
-  categoryItem: {
-    alignItems: "center",
-  },
-  categoryIcon: {
-    width: 60,
-    height: 60,
-    resizeMode: "contain",
-  },
-  categoryText: {
-    marginTop: 10,
-    fontSize: 16,
-  },
-  productContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    paddingHorizontal: 10,
-  },
-  productItem: {
-    width: "45%",
+  statItem: {
     marginBottom: 20,
-    borderWidth: 1,
-    borderColor: COLORS.lightGray,
+  },
+  statLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: COLORS.primary,
+  },
+  statValue: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: COLORS.darkGray,
+  },
+  employeeList: {
+    margin: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+    color: COLORS.primary,
+  },
+  employeeItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.lightGray,
+    backgroundColor: COLORS.white,
     borderRadius: 10,
-    overflow: "hidden",
+    marginBottom: 10,
+    elevation: 2,
   },
-  productImage: {
-    width: "100%",
-    height: 150,
-    resizeMode: "cover",
+  employeeInfo: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  productName: {
-    marginVertical: 10,
-    paddingHorizontal: 10,
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 15,
+  },
+  employeeName: {
     fontSize: 16,
     fontWeight: "bold",
   },
-  productPrice: {
-    marginBottom: 10,
-    paddingHorizontal: 10,
+  employeePosition: {
     fontSize: 14,
     color: COLORS.secondary,
   },
-  footer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingVertical: 10,
+  addButton: {
     backgroundColor: COLORS.primary,
-  },
-  footerItem: {
+    padding: 15,
+    borderRadius: 10,
+    margin: 20,
     alignItems: "center",
+    elevation: 3,
   },
-  footerText: {
-    fontSize: 16,
+  addButtonText: {
     color: COLORS.white,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
+  

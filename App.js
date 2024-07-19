@@ -7,17 +7,19 @@ import { EmployeeProvider } from './context/EmployeeContext';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
+
 export default function App() {
   return (
     <Provider store={store}>
-    {/* <AuthProvider>
-      <EmployeeProvider> */}
+     <AuthProvider>
+      <EmployeeProvider> 
         <SafeAreaView>
           <Stack/>
+          
           {/* <RootLayout /> */}
         </SafeAreaView>
-      {/* </EmployeeProvider>
-    </AuthProvider> */}
+     </EmployeeProvider>
+    </AuthProvider> 
     </Provider>
 
   );
