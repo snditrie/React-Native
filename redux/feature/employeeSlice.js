@@ -3,6 +3,7 @@ import axiosInstance from "../../api/axiosInstance"
 import axios from "axios"
 
 const initialState = {
+    
     employees: [],
     status: null,
     error: null
