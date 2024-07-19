@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { EmployeeContext } from "../context/EmployeeContext";
+import React, { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import COLORS from "../constants/color";
 import { useDispatch, useSelector } from "react-redux";
@@ -63,8 +62,8 @@ const EmployeeForm = () => {
   }, [isEditMode, id, employees]);
 
   const handleAddOrUpdateEmployee = () => {
-    const { fullName, email, phone, salary } = formValues;
-    if (!fullName || !email || !phone || !salary) {
+    const { fullName, email, phone, position ,salary } = formValues;
+    if (!fullName || !email || !phone || !position ||!salary) {
       Alert.alert("Error", "All fields must be filled out.");
       return;
     }
@@ -76,11 +75,24 @@ const EmployeeForm = () => {
     };
 
     if (isEditMode) {
-      dispatch(updateEmployee({ id, ...employeeData }));
+      dispatch(updateEmployee({ id, ...employeeData }))
+        .then(() => {
+          Alert.alert("Success", "Employee updated successfully.");
+          router.push("employee");
+        })
+        .catch((error) => {
+          Alert.alert("Error", error.message || "Failed to update employee.");
+        });
     } else {
-      dispatch(createEmployee(employeeData));
+      dispatch(createEmployee(employeeData))
+        .then(() => {
+          Alert.alert("Success", "Employee added successfully.");
+          router.push("employee");
+        })
+        .catch((error) => {
+          Alert.alert("Error", error.message || "Failed to add employee.");
+        });
     }
-
     // Clear form after submission
     setFormValues({
       fullName: "",

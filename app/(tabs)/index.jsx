@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { LineChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 
+
 // Define screen width for the chart
 const screenWidth = Dimensions.get("window").width;
 

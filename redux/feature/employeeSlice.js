@@ -27,7 +27,7 @@ export const createEmployee = createAsyncThunk(
             console.log('Sending employee data:', employee);
             const response = await axiosInstance.post('/employee', employee, {
                 headers: {
-                    'Content-Type': 'applicaation/json'
+                    'Content-Type': 'application/json'
                 }
             })
             return response.data
