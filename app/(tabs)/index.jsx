@@ -1,7 +1,3 @@
-
-
-
-
 import {
   Image,
   SafeAreaView,
@@ -14,18 +10,36 @@ import {
 import React from "react";
 import COLORS from "../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
+import { LineChart } from "react-native-chart-kit";
+import { Dimensions } from "react-native";
 
-const EmployeeDashboard = () => {
+// Define screen width for the chart
+const screenWidth = Dimensions.get("window").width;
+
+const EmployeeDashboard = ({ navigation }) => {
+  // Sample data for the chart
+  const data = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"], // Example months
+    datasets: [
+      {
+        data: [30, 45, 28, 80, 99, 43, 60], // Example employee count data
+        color: (opacity = 1) => COLORS.primary, // Line color
+        strokeWidth: 2, // Line width
+      },
+    ],
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         {/* Header Bar */}
         <View style={styles.header}>
           <Text style={styles.headerText}>Employee Dashboard</Text>
-          <TouchableOpacity style={styles.profileButton}
-             onPress={() => navigation.navigate('Profile')}>
-            
-            <Ionicons name="person-circle-outline" color="white" size={24} />
+          <TouchableOpacity
+            style={styles.profileButton}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <Ionicons name="person-circle-outline" color={COLORS.white} size={24} />
           </TouchableOpacity>
         </View>
 
@@ -44,6 +58,34 @@ const EmployeeDashboard = () => {
               <Text style={styles.statLabel}>Departments:</Text>
               <Text style={styles.statValue}>2</Text>
             </View>
+          </View>
+
+          {/* Employee Statistics Chart */}
+          <View style={styles.chartContainer}>
+            <Text style={styles.sectionTitle}>Employee Trends</Text>
+            <LineChart
+              data={data}
+              width={screenWidth - 40} // Adjust chart width
+              height={220}
+              chartConfig={{
+                backgroundColor: "#fff",
+                backgroundGradientFrom: "#fff",
+                backgroundGradientTo: "#fff",
+                decimalPlaces: 0, // Optional
+                color: (opacity = 1) => COLORS.primary,
+                labelColor: (opacity = 1) => COLORS.primary,
+                style: {
+                  borderRadius: 16,
+                },
+                propsForDots: {
+                  r: "6",
+                  strokeWidth: "2",
+                  stroke: COLORS.primary,
+                },
+              }}
+              bezier
+              style={styles.chart}
+            />
           </View>
 
           {/* Employee List */}
@@ -74,16 +116,14 @@ const EmployeeDashboard = () => {
                 </View>
               </View>
             </TouchableOpacity>
-       
           </View>
 
-     
-          <TouchableOpacity 
+          {/* <TouchableOpacity 
             style={styles.addButton} 
             onPress={() => navigation.navigate('EmployeeForm')}
           >
             <Text style={styles.addButtonText}>Add Employee</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -134,14 +174,21 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: COLORS.darkGray,
   },
-  employeeList: {
-    margin: 20,
+  chartContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 15,
     color: COLORS.primary,
+  },
+  chart: {
+    borderRadius: 16,
+  },
+  employeeList: {
+    marginHorizontal: 20,
   },
   employeeItem: {
     padding: 15,
@@ -184,4 +231,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-  
