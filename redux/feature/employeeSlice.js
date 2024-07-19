@@ -10,16 +10,12 @@ const API_BASE_URL = 'http://10.10.103.57:8082/api/v1/employee';
 
 export const fetchEmployees = createAsyncThunk(
     'employee/fetchEmployees',
-    async (_, { rejectWithValue }) => {
+    async (_, {rejectedWithValue}) => {
         try {
-            const response = await fetch(API_BASE_URL);
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-            const data = await response.json();
-            return data;
+            const response = await axiosInstance.get('/employee')
+            return response.data
         } catch (e) {
-            return rejectWithValue(e.message);
+            return rejectedWithValue(error.response.data)
         }
     }
 );
@@ -95,19 +91,12 @@ export const updateEmployee = createAsyncThunk(
 
 export const deleteEmployee = createAsyncThunk(
     'employee/deleteEmployee',
-    async (id, { rejectWithValue }) => {
+    async (employee, {rejectedWithValue}) => {
         try {
-            const response = await fetch(`${API_BASE_URL}/${id}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-
-            return id;  // Mengembalikan ID karyawan yang dihapus
+            const response = await axiosInstance.put('/api/v1/employee', employee)
+            return response.data
         } catch (e) {
-            return rejectWithValue(e.message);
+            return rejectedWithValue(error.response.data)
         }
     }
 );
