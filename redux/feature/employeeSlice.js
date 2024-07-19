@@ -66,15 +66,18 @@ export const updateEmployee = createAsyncThunk(
             formData.append("employee", JSON.stringify(employee));
             formData.append("image", null);  // Ganti `null` dengan file gambar jika ada
 
-            const res = await fetch(`${API_BASE_URL}/${employee.id}`, {
+            const res = await fetch(API_BASE_URL, {
                 method: 'PUT',
                 headers: {
+                    "Content-Type": "multipart/form-data;",
                     "Accept": "*/*",
                     "Accept-Encoding": "gzip, deflate, br",
-                    "Connection": "keep-alive"
+                    "Connection": "keep-alive",
                 },
                 body: formData
             });
+
+            console.log(res)
 
             if (!res.ok) {
                 throw new Error(`Error: ${res.status}`);

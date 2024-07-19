@@ -46,7 +46,6 @@ const EmployeeForm = () => {
   useEffect(() => {
     if (isEditMode) {
       const employee = employees.find((emp) => emp.id === id);
-      console.log(employee);
       if (employee) {
         setFormValues({
           fullName: employee.fullName,
@@ -71,12 +70,13 @@ const EmployeeForm = () => {
 
     const employeeData = {
       ...formValues,
-      hireDate: formValues.hireDate,
+      image: null,
+      hireDate: formValues.hireDate.toISOString(),
       position: value, // Set the position value
     };
 
     if (isEditMode) {
-      dispatch(updateEmployee({ id, ...employeeData }))
+      dispatch(updateEmployee({ id: id, ...employeeData }))
         .then(() => {
           Alert.alert("Success", "Employee updated successfully.");
           router.push("employee");
