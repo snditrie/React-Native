@@ -26,12 +26,30 @@ export const createEmployee = createAsyncThunk(
     async (employee, {rejectedWithValue}) => {
         try {
             console.log('Sending employee data:', employee);
-            const response = await axiosInstance.post('/employee', employee, {
+            // const response = await axiosInstance.post('/employee', employee, {
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // })
+
+            const res = await fetch("http://10.10.103.57:8082/api/v1/employee", {
+                method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    "Content-Type": "multipart/form-data",
+                    "Accept": "*/*",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Connection": "keep-alive"
+                },
+                body: employee
             })
-            return response.data
+
+            console.log("Status kita saat ini: ", res)
+
+            const data = res.json()
+
+            console.log("Masuk GOBLOK nih data: ", data)
+
+            return data.data
         } catch (e) {
             return rejectedWithValue(error.response.data)
         }
