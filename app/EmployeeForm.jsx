@@ -71,7 +71,7 @@ const EmployeeForm = () => {
 
     const employeeData = {
       ...formValues,
-      hireDate: formValues.hireDate.toISOString(),
+      hireDate: formValues.hireDate,
       position: value, // Set the position value
     };
 
@@ -99,7 +99,7 @@ const EmployeeForm = () => {
       fullName: "",
       email: "",
       phoneNumber: "",
-      hireDate: new Date().toISOString(),
+      hireDate: new Date(),
       position: "",
       salary: "",
       image: null,
@@ -169,7 +169,7 @@ const EmployeeForm = () => {
             style={styles.dateButton}
           >
             <Text style={styles.dateButtonText}>
-              {formValues.hireDate.toISOString().split("T")[0]}
+              {formValues.hireDate.toDateString()}
             </Text>
           </TouchableOpacity>
           {showDatePicker && (
